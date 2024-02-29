@@ -6,8 +6,8 @@ from serial.tools import list_ports
 from yaspin import yaspin
 
 spinner = yaspin(text="Processando...", color="green")
-available_ports = list_ports.comports()
 app = typer.Typer()
+available_ports = list_ports.comports()
 
 # Prompts user to select a port
 chosen_port = inquirer.prompt([
@@ -56,15 +56,18 @@ def interface():
         respostas = inquirer.prompt(prompts)
         choices = process(respostas, robo, starting_pose, choices)
 
+# Processes the choices from the CLI
 def process(data, robo, starting_pose, choices):
     command = data["interface"]
 
+    # Outputs current position
     if command == "Posição atual":
         spinner.start()	
         posicao_atual = robo.current_position()
         spinner.stop()
         print(f"Posição atual: {posicao_atual}")
 
+    # Moves by imputed distance
     if command == "Movimentar":
             distance_x = float(typer.prompt("Distância a ser movida no eixo X:"))
             distance_y = float(typer.prompt("Distância a ser movida no eixo Y:"))
@@ -83,6 +86,7 @@ def process(data, robo, starting_pose, choices):
             spinner.stop()
             print(f"X={new_position_x}, Y={new_position_y}, Z={new_position_z}, R={new_position_r}")
 
+    # Turns actuator on
     if command == "Ligar atuador":
         spinner.start()
         robo.actuator_on()
@@ -92,6 +96,7 @@ def process(data, robo, starting_pose, choices):
             choices.remove("Ligar atuador")
             choices.insert(2, "Desligar atuador")
 
+    # Shuts down actuator
     if command == "Desligar atuador":
         spinner.start()
         robo.actuator_off()
@@ -101,6 +106,7 @@ def process(data, robo, starting_pose, choices):
             choices.remove("Desligar atuador")
             choices.insert(2, "Ligar atuador")
 
+    # Moves to starting position
     if command == "Posição inicial":
         spinner.start()
         robo.move_to(starting_pose[0], starting_pose[1], starting_pose[2], starting_pose[3], wait=True)
@@ -109,10 +115,12 @@ def process(data, robo, starting_pose, choices):
         if "Posição inicial" in choices:
             choices.remove("Posição inicial")
 
+    # Exits interface
     if command == "Sair": 
         sys.exit()
 
     return choices
 
+# Starts app
 if __name__ == "__main__":
     app()
