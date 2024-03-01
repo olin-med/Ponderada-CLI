@@ -18,7 +18,7 @@ Este repositório contém o código relacionado à uma interface de linha de com
 
 ### Vídeo demonstração
 
-Segue no link a seguir um video de demonstração do robô, como requisitado na tarefa; https://www.youtube.com/
+Segue no link a seguir um video de demonstração do robô, como requisitado na tarefa; [video](https://www.youtube.com/watch?v=t684nMg7wh0)
 
 ## Autor
 
